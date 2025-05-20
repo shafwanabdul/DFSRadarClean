@@ -5,11 +5,69 @@ Imports ZedGraph
 Imports System.Drawing
 Imports System.ComponentModel
 Imports System.Threading
+Imports System.Net.Http
+Imports System.Text
+Imports Newtonsoft.Json
+Imports System.Threading.Tasks
+
+Public Class MLPredictionService
+    Private Shared ReadOnly client As New HttpClient()
+    Private Const ML_API_URL As String = "http://127.0.0.1:5001/predict" ' Matches Python server
+
+    Public Structure PredictionResponse
+        Public Property predicted_class As String
+        Public Property confidence As Double
+        Public Property probabilities As List(Of Double)
+        Public Property error_message As String ' For handling API errors
+    End Structure
+
+    Public Structure SpectrumRequest
+        Public Property spectrum_dbm As List(Of Double)
+    End Structure
+
+    Public Shared Async Function GetInterferencePrediction(dbmValues As List(Of Double)) As Task(Of PredictionResponse)
+        Dim response As New PredictionResponse()
+        Try
+            Dim requestPayload As New SpectrumRequest With {.spectrum_dbm = dbmValues}
+            Dim jsonPayload As String = JsonConvert.SerializeObject(requestPayload)
+            Dim content As New StringContent(jsonPayload, Encoding.UTF8, "application/json")
+
+            Dim httpResponse As HttpResponseMessage = Await client.PostAsync(ML_API_URL, content)
+
+            If httpResponse.IsSuccessStatusCode Then
+                Dim jsonResponse As String = Await httpResponse.Content.ReadAsStringAsync()
+                response = JsonConvert.DeserializeObject(Of PredictionResponse)(jsonResponse)
+            Else
+                Dim errorContent As String = Await httpResponse.Content.ReadAsStringAsync()
+                Debug.WriteLine($"ML API Error: {httpResponse.StatusCode} - {errorContent}")
+                response.error_message = $"API Error: {httpResponse.StatusCode}"
+                ' Attempt to deserialize error from API if it sends structured errors
+                Try
+                    Dim errorObj = JsonConvert.DeserializeObject(Of Object)(errorContent) ' Or a specific error structure
+                    response.error_message &= " - " & errorObj.ToString()
+                Catch exJson As JsonException
+                    ' Could not parse error, use raw content
+                    response.error_message &= " - " & errorContent
+                End Try
+            End If
+        Catch ex As HttpRequestException
+            Debug.WriteLine($"HTTP Request Exception for ML API: {ex.Message}")
+            response.error_message = "Network error calling ML service."
+        Catch ex As JsonException
+            Debug.WriteLine($"JSON Exception processing ML API response: {ex.Message}")
+            response.error_message = "Invalid JSON response from ML service."
+        Catch ex As Exception
+            Debug.WriteLine($"Generic Exception calling ML API: {ex.ToString()}")
+            response.error_message = "Unexpected error calling ML service."
+        End Try
+        Return response
+    End Function
+End Class
 
 Public Class Form1
     ' Check Device
     Const HackRFPath As String = "C:\Program Files (x86)\HackRF\bin\hackrf_info.exe"
-
+    Private mlUpdateTimer As System.Windows.Forms.Timer
     Private Async Sub btnCheck_Click(sender As Object, e As EventArgs) Handles btnCheck.Click
         btnCheck.Enabled = False
         btnCheck.Text = "Checking..."
@@ -190,6 +248,12 @@ Public Class Form1
         End If
         ' --- End Threshold Line Initialization ---
 
+        mlUpdateTimer = New System.Windows.Forms.Timer()
+        mlUpdateTimer.Interval = 2000 ' Predict every 2 seconds
+        AddHandler mlUpdateTimer.Tick, AddressOf M LUpdateTimer_Tick
+        mlUpdateTimer.Start() ' Start it when HackRF is connected and sweeping
+
+   
         UpdateDisplayWithDeclaredVariables()
         UpdateRadarStatusLabel() ' Set initial radar status
     End Sub
@@ -465,7 +529,70 @@ Public Class Form1
         zg1.Invalidate() ' Redraw the chart
     End Sub
 
+    ' Add this field to your Form1 class
+    Private mlModelPrediction As MLPredictionService.PredictionResponse
 
+    Private Async Sub UpdateRadarStatusWithML()
+        If Me.IsHandleCreated AndAlso Not Me.IsDisposed Then
+            Dim dataToPredict As List(Of Double) = Nothing
+            SyncLock dataLock ' Ensure thread-safe access
+                ' Decide what data to send: Live, MaxHold, or Smoothed.
+                ' MaxHold is probably good for persistent interference.
+                ' LiveSmoothed for more immediate, less noisy reaction.
+                If MaxHoldSweepPoints IsNot Nothing AndAlso MaxHoldSweepPoints.Count > 0 Then
+                    dataToPredict = MaxHoldSweepPoints.Select(Function(p) p.Y).ToList()
+                    ' ElseIf SmoothedLivePoints IsNot Nothing AndAlso SmoothedLivePoints.Count > 0 Then
+                    '    dataToPredict = SmoothedLivePoints.Select(Function(p) p.Y).ToList()
+                Else
+                    ' No data to predict
+                    If lblRadarStatus IsNot Nothing Then
+                        lblRadarStatus.Text = "Status: No Data for ML"
+                        lblRadarStatus.ForeColor = SystemColors.ControlText
+                    End If
+                    Return
+                End If
+            End SyncLock
+
+            If dataToPredict IsNot Nothing AndAlso dataToPredict.Any() Then
+                ' Asynchronously get prediction
+                mlModelPrediction = Await MLPredictionService.GetInterferencePrediction(dataToPredict)
+
+                ' Update UI on the UI thread
+                Me.BeginInvoke(New Action(Sub()
+                                              If lblRadarStatus Is Nothing Then
+                                                  Debug.WriteLine("UpdateRadarStatusWithML: lblRadarStatus is Nothing.")
+                                                  Return
+                                              End If
+
+                                              If Not String.IsNullOrEmpty(mlModelPrediction.error_message) Then
+                                                  lblRadarStatus.Text = $"ML: {mlModelPrediction.error_message}"
+                                                  lblRadarStatus.ForeColor = Color.OrangeRed
+                                              ElseIf Not String.IsNullOrEmpty(mlModelPrediction.predicted_class) Then
+                                                  lblRadarStatus.Text = $"ML: {mlModelPrediction.predicted_class} ({mlModelPrediction.confidence:P1})"
+                                                  ' Customize color based on prediction
+                                                  Select Case mlModelPrediction.predicted_class.ToLower()
+                                                      Case "wifi", "wi-fi", "wifi+radar", "wi-fi+radar", "radar"
+                                                          lblRadarStatus.ForeColor = Color.Red
+                                                      Case "no interference", "clear"
+                                                          lblRadarStatus.ForeColor = Color.Green
+                                                      Case Else
+                                                          lblRadarStatus.ForeColor = Color.DarkOrange
+                                                  End Select
+                                              Else
+                                                  lblRadarStatus.Text = "ML: No prediction"
+                                                  lblRadarStatus.ForeColor = SystemColors.ControlText
+                                              End If
+                                          End Sub))
+            Else
+                Me.BeginInvoke(New Action(Sub()
+                                              If lblRadarStatus IsNot Nothing Then
+                                                  lblRadarStatus.Text = "Status: No Data"
+                                                  lblRadarStatus.ForeColor = SystemColors.ControlText
+                                              End If
+                                          End Sub))
+            End If
+        End If
+    End Sub
     Private Sub btnStartSweep_Click(sender As Object, e As EventArgs) Handles btnStartSweep.Click
         Debug.WriteLine("Start Sweep Button Clicked.")
         If SweepProcess IsNot Nothing AndAlso Not SweepProcess.HasExited Then
