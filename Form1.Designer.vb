@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,12 +20,14 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadCsvSimulationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -57,8 +59,30 @@ Partial Class Form1
         Me.btnCheck = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.lbInferredChannelMoves = New System.Windows.Forms.ListBox()
+        Me.lbObservedWifiEvents = New System.Windows.Forms.ListBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.tbThresholdResult = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.tbDetectionAcc = New System.Windows.Forms.TextBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.tbAMPStatus = New System.Windows.Forms.TextBox()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.tbBandwidth = New System.Windows.Forms.TextBox()
+        Me.tbSampRate = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.tbLastChannel = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.tbBBGain = New System.Windows.Forms.TextBox()
         Me.tbVGAGain = New System.Windows.Forms.TextBox()
         Me.tbLNAGain = New System.Windows.Forms.TextBox()
         Me.tbCurrentCh = New System.Windows.Forms.TextBox()
@@ -80,6 +104,7 @@ Partial Class Form1
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -95,15 +120,29 @@ Partial Class Form1
         '
         'FileToolStripMenuItem
         '
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenFileToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
         '
+        'OpenFileToolStripMenuItem
+        '
+        Me.OpenFileToolStripMenuItem.Name = "OpenFileToolStripMenuItem"
+        Me.OpenFileToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+        Me.OpenFileToolStripMenuItem.Text = "Open File"
+        '
         'ToolsToolStripMenuItem
         '
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadCsvSimulationToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(47, 20)
         Me.ToolsToolStripMenuItem.Text = "Tools"
+        '
+        'LoadCsvSimulationToolStripMenuItem
+        '
+        Me.LoadCsvSimulationToolStripMenuItem.Name = "LoadCsvSimulationToolStripMenuItem"
+        Me.LoadCsvSimulationToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.LoadCsvSimulationToolStripMenuItem.Text = "Load Recorded Event"
         '
         'AboutToolStripMenuItem
         '
@@ -201,7 +240,7 @@ Partial Class Form1
         '
         'btnThreshold
         '
-        Me.btnThreshold.Location = New System.Drawing.Point(12, 289)
+        Me.btnThreshold.Location = New System.Drawing.Point(10, 251)
         Me.btnThreshold.Name = "btnThreshold"
         Me.btnThreshold.Size = New System.Drawing.Size(83, 24)
         Me.btnThreshold.TabIndex = 1
@@ -211,7 +250,7 @@ Partial Class Form1
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(83, 256)
+        Me.Label10.Location = New System.Drawing.Point(82, 228)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(20, 13)
         Me.Label10.TabIndex = 19
@@ -219,16 +258,17 @@ Partial Class Form1
         '
         'tbThreshold
         '
-        Me.tbThreshold.Location = New System.Drawing.Point(11, 253)
+        Me.tbThreshold.Location = New System.Drawing.Point(10, 225)
         Me.tbThreshold.Name = "tbThreshold"
         Me.tbThreshold.Size = New System.Drawing.Size(66, 20)
         Me.tbThreshold.TabIndex = 18
+        Me.tbThreshold.Text = "-64"
         Me.tbThreshold.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(23, 227)
+        Me.Label9.Location = New System.Drawing.Point(22, 209)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(54, 13)
         Me.Label9.TabIndex = 17
@@ -416,17 +456,109 @@ Partial Class Form1
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.lbInferredChannelMoves)
+        Me.GroupBox6.Controls.Add(Me.lbObservedWifiEvents)
+        Me.GroupBox6.Controls.Add(Me.Label24)
+        Me.GroupBox6.Controls.Add(Me.tbThresholdResult)
+        Me.GroupBox6.Controls.Add(Me.Label12)
+        Me.GroupBox6.Controls.Add(Me.Label23)
+        Me.GroupBox6.Controls.Add(Me.Label13)
+        Me.GroupBox6.Controls.Add(Me.tbDetectionAcc)
         Me.GroupBox6.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox6.Location = New System.Drawing.Point(6, 285)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(802, 194)
         Me.GroupBox6.TabIndex = 5
         Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Radar Detection and Predition"
+        Me.GroupBox6.Text = "Radar Detection and System Switching"
+        '
+        'lbInferredChannelMoves
+        '
+        Me.lbInferredChannelMoves.FormattingEnabled = True
+        Me.lbInferredChannelMoves.ItemHeight = 20
+        Me.lbInferredChannelMoves.Location = New System.Drawing.Point(22, 135)
+        Me.lbInferredChannelMoves.Name = "lbInferredChannelMoves"
+        Me.lbInferredChannelMoves.Size = New System.Drawing.Size(754, 44)
+        Me.lbInferredChannelMoves.TabIndex = 27
+        '
+        'lbObservedWifiEvents
+        '
+        Me.lbObservedWifiEvents.FormattingEnabled = True
+        Me.lbObservedWifiEvents.ItemHeight = 20
+        Me.lbObservedWifiEvents.Location = New System.Drawing.Point(22, 85)
+        Me.lbObservedWifiEvents.Name = "lbObservedWifiEvents"
+        Me.lbObservedWifiEvents.Size = New System.Drawing.Size(754, 44)
+        Me.lbObservedWifiEvents.TabIndex = 26
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(753, 42)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(23, 20)
+        Me.Label24.TabIndex = 25
+        Me.Label24.Text = "%"
+        '
+        'tbThresholdResult
+        '
+        Me.tbThresholdResult.Location = New System.Drawing.Point(190, 42)
+        Me.tbThresholdResult.Name = "tbThresholdResult"
+        Me.tbThresholdResult.Size = New System.Drawing.Size(145, 26)
+        Me.tbThresholdResult.TabIndex = 12
+        Me.tbThresholdResult.Text = "-64"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(18, 45)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(127, 20)
+        Me.Label12.TabIndex = 12
+        Me.Label12.Text = "Signal Threshold"
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(341, 45)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(42, 20)
+        Me.Label23.TabIndex = 24
+        Me.Label23.Text = "dBm"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(430, 42)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(147, 20)
+        Me.Label13.TabIndex = 13
+        Me.Label13.Text = "Detection Accuracy"
+        '
+        'tbDetectionAcc
+        '
+        Me.tbDetectionAcc.Location = New System.Drawing.Point(602, 39)
+        Me.tbDetectionAcc.Name = "tbDetectionAcc"
+        Me.tbDetectionAcc.Size = New System.Drawing.Size(145, 26)
+        Me.tbDetectionAcc.TabIndex = 14
+        Me.tbDetectionAcc.Text = "0,9879"
         '
         'GroupBox7
         '
-        Me.GroupBox7.Controls.Add(Me.tbAMPStatus)
+        Me.GroupBox7.Controls.Add(Me.Label22)
+        Me.GroupBox7.Controls.Add(Me.Label21)
+        Me.GroupBox7.Controls.Add(Me.Label20)
+        Me.GroupBox7.Controls.Add(Me.Label19)
+        Me.GroupBox7.Controls.Add(Me.Label18)
+        Me.GroupBox7.Controls.Add(Me.Label17)
+        Me.GroupBox7.Controls.Add(Me.TextBox4)
+        Me.GroupBox7.Controls.Add(Me.tbBandwidth)
+        Me.GroupBox7.Controls.Add(Me.tbSampRate)
+        Me.GroupBox7.Controls.Add(Me.Label14)
+        Me.GroupBox7.Controls.Add(Me.Label15)
+        Me.GroupBox7.Controls.Add(Me.Label16)
+        Me.GroupBox7.Controls.Add(Me.tbLastChannel)
+        Me.GroupBox7.Controls.Add(Me.Label11)
+        Me.GroupBox7.Controls.Add(Me.tbBBGain)
         Me.GroupBox7.Controls.Add(Me.tbVGAGain)
         Me.GroupBox7.Controls.Add(Me.tbLNAGain)
         Me.GroupBox7.Controls.Add(Me.tbCurrentCh)
@@ -442,60 +574,184 @@ Partial Class Form1
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Hardware Setting Specifications"
         '
-        'tbAMPStatus
+        'Label22
         '
-        Me.tbAMPStatus.Location = New System.Drawing.Point(175, 143)
-        Me.tbAMPStatus.Name = "tbAMPStatus"
-        Me.tbAMPStatus.Size = New System.Drawing.Size(145, 26)
-        Me.tbAMPStatus.TabIndex = 9
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(704, 146)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(37, 20)
+        Me.Label22.TabIndex = 23
+        Me.Label22.Text = "Sec"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(704, 109)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(42, 20)
+        Me.Label21.TabIndex = 22
+        Me.Label21.Text = "MHz"
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(704, 80)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(54, 20)
+        Me.Label20.TabIndex = 21
+        Me.Label20.Text = "MSPS"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(306, 143)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(29, 20)
+        Me.Label19.TabIndex = 20
+        Me.Label19.Text = "dB"
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(306, 109)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(29, 20)
+        Me.Label18.TabIndex = 19
+        Me.Label18.Text = "dB"
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(306, 77)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(29, 20)
+        Me.Label17.TabIndex = 18
+        Me.Label17.Text = "dB"
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(553, 143)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(145, 26)
+        Me.TextBox4.TabIndex = 17
+        Me.TextBox4.Text = "1"
+        '
+        'tbBandwidth
+        '
+        Me.tbBandwidth.Location = New System.Drawing.Point(553, 109)
+        Me.tbBandwidth.Name = "tbBandwidth"
+        Me.tbBandwidth.Size = New System.Drawing.Size(145, 26)
+        Me.tbBandwidth.TabIndex = 16
+        Me.tbBandwidth.Text = "20"
+        '
+        'tbSampRate
+        '
+        Me.tbSampRate.Location = New System.Drawing.Point(553, 77)
+        Me.tbSampRate.Name = "tbSampRate"
+        Me.tbSampRate.Size = New System.Drawing.Size(145, 26)
+        Me.tbSampRate.TabIndex = 15
+        Me.tbSampRate.Text = "20"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(430, 146)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(120, 20)
+        Me.Label14.TabIndex = 14
+        Me.Label14.Text = "Response Time"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(430, 112)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(84, 20)
+        Me.Label15.TabIndex = 13
+        Me.Label15.Text = "Bandwidth"
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(430, 77)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(102, 20)
+        Me.Label16.TabIndex = 12
+        Me.Label16.Text = "Sample Rate"
+        '
+        'tbLastChannel
+        '
+        Me.tbLastChannel.Location = New System.Drawing.Point(553, 39)
+        Me.tbLastChannel.Name = "tbLastChannel"
+        Me.tbLastChannel.Size = New System.Drawing.Size(228, 26)
+        Me.tbLastChannel.TabIndex = 11
+        Me.tbLastChannel.Text = "Channel 52 (5260 MHz, DFS)"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(430, 45)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(103, 20)
+        Me.Label11.TabIndex = 10
+        Me.Label11.Text = "Last Channel"
+        '
+        'tbBBGain
+        '
+        Me.tbBBGain.Location = New System.Drawing.Point(149, 140)
+        Me.tbBBGain.Name = "tbBBGain"
+        Me.tbBBGain.Size = New System.Drawing.Size(145, 26)
+        Me.tbBBGain.TabIndex = 9
+        Me.tbBBGain.Text = "62"
         '
         'tbVGAGain
         '
-        Me.tbVGAGain.Location = New System.Drawing.Point(175, 109)
+        Me.tbVGAGain.Location = New System.Drawing.Point(149, 106)
         Me.tbVGAGain.Name = "tbVGAGain"
         Me.tbVGAGain.Size = New System.Drawing.Size(145, 26)
         Me.tbVGAGain.TabIndex = 8
         '
         'tbLNAGain
         '
-        Me.tbLNAGain.Location = New System.Drawing.Point(175, 74)
+        Me.tbLNAGain.Location = New System.Drawing.Point(149, 74)
         Me.tbLNAGain.Name = "tbLNAGain"
         Me.tbLNAGain.Size = New System.Drawing.Size(145, 26)
         Me.tbLNAGain.TabIndex = 7
         '
         'tbCurrentCh
         '
-        Me.tbCurrentCh.Location = New System.Drawing.Point(175, 39)
+        Me.tbCurrentCh.Location = New System.Drawing.Point(149, 42)
         Me.tbCurrentCh.Name = "tbCurrentCh"
         Me.tbCurrentCh.Size = New System.Drawing.Size(228, 26)
         Me.tbCurrentCh.TabIndex = 6
+        Me.tbCurrentCh.Text = "Channel 36 (5180 MHz)"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(18, 146)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(70, 20)
+        Me.Label8.Size = New System.Drawing.Size(69, 20)
         Me.Label8.TabIndex = 3
-        Me.Label8.Text = "Amplifier"
+        Me.Label8.Text = "BB Gain"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.Location = New System.Drawing.Point(18, 112)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(82, 20)
+        Me.Label7.Size = New System.Drawing.Size(62, 20)
         Me.Label7.TabIndex = 2
-        Me.Label7.Text = "VGA Gain"
+        Me.Label7.Text = "IF Gain"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(18, 77)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(78, 20)
+        Me.Label6.Size = New System.Drawing.Size(69, 20)
         Me.Label6.TabIndex = 1
-        Me.Label6.Text = "LNA Gain"
+        Me.Label6.Text = "RF Gain"
         '
         'Label5
         '
@@ -553,7 +809,7 @@ Partial Class Form1
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "Dynamic Frequency Selection Validation Software"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
@@ -567,6 +823,8 @@ Partial Class Form1
         Me.GroupBox1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
@@ -613,7 +871,7 @@ Partial Class Form1
     Friend WithEvents Label5 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents tbCurrentCh As TextBox
-    Friend WithEvents tbAMPStatus As TextBox
+    Friend WithEvents tbBBGain As TextBox
     Friend WithEvents tbVGAGain As TextBox
     Friend WithEvents tbLNAGain As TextBox
     Friend WithEvents tbCurrentChDisplay As TextBox
@@ -624,4 +882,28 @@ Partial Class Form1
     Friend WithEvents tbThreshold As TextBox
     Friend WithEvents btnResetMax As Button
     Friend WithEvents btnResetMin As Button
+    Friend WithEvents Label13 As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents tbLastChannel As TextBox
+    Friend WithEvents Label11 As Label
+    Friend WithEvents tbDetectionAcc As TextBox
+    Friend WithEvents tbThresholdResult As TextBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Label15 As Label
+    Friend WithEvents Label16 As Label
+    Friend WithEvents Label22 As Label
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Label20 As Label
+    Friend WithEvents Label19 As Label
+    Friend WithEvents Label18 As Label
+    Friend WithEvents Label17 As Label
+    Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents tbBandwidth As TextBox
+    Friend WithEvents tbSampRate As TextBox
+    Friend WithEvents Label23 As Label
+    Friend WithEvents Label24 As Label
+    Friend WithEvents lbObservedWifiEvents As ListBox
+    Friend WithEvents lbInferredChannelMoves As ListBox
+    Friend WithEvents OpenFileToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LoadCsvSimulationToolStripMenuItem As ToolStripMenuItem
 End Class
